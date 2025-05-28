@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "bass-detector"
+version = "0.1.0"
+description = ""
+authors = ["wachinaba <wachinaba@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11, <3.12"
+sounddevice = "^0.5.2"
+numpy = "^2.2.6"
+matplotlib = "^3.10.3"
+pyqtgraph = "^0.13.7"
+pyside6 = "^6.9.0"
+scipy = "^1.15.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
