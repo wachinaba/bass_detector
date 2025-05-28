@@ -595,6 +595,20 @@ files = [
 numpy = ">=1.22.0"
 
 [[package]]
+name = "pyserial"
+version = "3.5"
+description = "Python Serial Port Extension"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
+    {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+
+[package.extras]
+cp2110 = ["hidapi"]
+
+[[package]]
 name = "pyside6"
 version = "6.9.0"
 description = "Python bindings for the Qt cross-platform application and UI framework"
@@ -773,4 +787,4 @@ numpy = ["NumPy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11, <3.12"
-content-hash = "b3c6e989b1939c8e63612d7a66a99dc2959d74a2cefad3d2655b9d4241aefc20"
+content-hash = "650c9826f688ff224977cfabf9f4bac233a9d9c1c4a4477fe76c1697d67656f3"
