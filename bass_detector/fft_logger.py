@@ -148,6 +148,10 @@ class FFTLogger(QMainWindow):
             (128, 0, 255),  # 紫
         ]
 
+        # 光るバー用の設定
+        self.light_bar = None
+        self.light_bar_height = 30  # バーの高さ（ピクセル）
+
         # プロットの設定
         self.setup_ui()
 
@@ -647,11 +651,24 @@ class FFTLogger(QMainWindow):
         layout.addLayout(bin_layout)
 
         # プロットウィジェットの設定
+        plot_container = QWidget()
+        plot_layout = QVBoxLayout(plot_container)
+        plot_layout.setContentsMargins(0, 0, 0, 0)
+
         self.plot_widget = pg.PlotWidget()
         self.plot_widget.setLabel("left", "Power")
         self.plot_widget.setLabel("bottom", "Time (frames)")
         self.plot_widget.setYRange(0, 300)
         self.plot_widget.setXRange(0, self.time_buffer_size)
+        plot_layout.addWidget(self.plot_widget)
+
+        # 光るバーの設定
+        self.light_bar = QWidget()
+        self.light_bar.setFixedHeight(self.light_bar_height)
+        self.light_bar.setStyleSheet("background-color: black;")
+        plot_layout.addWidget(self.light_bar)
+
+        layout.addWidget(plot_container)
 
         # プロットアイテムの設定
         self.plot_items = []
@@ -736,7 +753,7 @@ class FFTLogger(QMainWindow):
             self.param_widgets["peak_pulse_cooldown"].setVisible(True)
 
     def set_background_color(self, intensity):
-        """背景色を設定"""
+        """光るバーの色を設定"""
         try:
             # アクティベーション関数を適用
             activation_func = self.get_activation_function()
@@ -746,15 +763,18 @@ class FFTLogger(QMainWindow):
             normalized_intensity = min(1.0, max(0.0, normalized_intensity))
             brightness = int(255 * normalized_intensity)
 
-            color = QColor(brightness, brightness, brightness)
-            self.setStyleSheet(f"QMainWindow {{ background-color: {color.name()}; }}")
+            # 光るバーの色を更新
+            if self.light_bar is not None:
+                color = QColor(brightness, brightness, brightness)
+                self.light_bar.setStyleSheet(f"background-color: {color.name()};")
         except Exception as e:
-            print(f"背景色の更新でエラーが発生しました: {e}")
+            print(f"光るバーの更新でエラーが発生しました: {e}")
             # エラー時は黒色に設定
-            self.setStyleSheet("QMainWindow { background-color: black; }")
+            if self.light_bar is not None:
+                self.light_bar.setStyleSheet("background-color: black;")
 
     def update_background(self):
-        """背景色を更新"""
+        """光るバーを更新"""
         current_time = time.time()
         peak_sum = 0.0
 
@@ -768,7 +788,7 @@ class FFTLogger(QMainWindow):
         # ピーク合計を更新
         self.current_peak_sum = peak_sum
 
-        # 背景色を更新
+        # 光るバーを更新
         self.set_background_color(peak_sum)
 
     def detect_features(self, current_data):
